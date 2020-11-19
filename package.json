@@ -1,0 +1,21 @@
+{
+  "name": "simple-blog-rest-api-ts",
+  "version": "1.0.0",
+  "description": "Very Simple Blog Rest-API",
+  "main": "index.js",
+  "author": "irianto",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "rm -rf build/ && tsc",
+    "ts": "rm -rf build/ && tsc -w",
+    "dev": "nodemon ./build/index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "nodemon": "^2.0.6",
+    "typescript": "^4.0.5"
+  }
+}
