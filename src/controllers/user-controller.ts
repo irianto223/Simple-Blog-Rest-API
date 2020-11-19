@@ -1,18 +1,28 @@
 import { Request, Response } from 'express';
+import ControllerInterface from './controller-interface';
 
-class UserController {
-  static list(_: Request, res: Response): void {
-    res.send('GET /users OK');
+class UserController implements ControllerInterface {
+
+  list(_: Request, res: Response): Response {
+    return res.send('GET users OK');
   }
 
-  static detail(req: Request, res: Response): void {
-    res.send(req.params);
+  detail(req: Request, res: Response): Response {
+    return res.send('GET detail user OK');
   }
 
-  static create(req: Request, res: Response): void {
-    res.send(req.body);
-    // res.send('POST /users OK');
+  create(req: Request, res: Response): Response {
+    return res.send('CREATE user OK');
   }
+
+  update(req: Request, res: Response): Response {
+    return res.send('UPDATE user OK');
+  }
+
+  delete(req: Request, res: Response): Response {
+    return res.send('DELETE user OK');
+  }
+
 }
 
-export default UserController;
+export default new UserController();

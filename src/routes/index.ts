@@ -10,7 +10,7 @@ class IndexRoute {
   }
 
   protected routes(): void {
-    this.router.use('/users', new UserRoute().router);
+    this.router.use('/api/v1/users', new UserRoute().router);
   }
 }
 
