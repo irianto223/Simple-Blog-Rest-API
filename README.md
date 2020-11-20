@@ -2,10 +2,23 @@
 This is a very simple Blog Rest-API using Typescript.
 
 ## How to run locally?
-Open 2 terminal sessions.
 
-On first terminal run this:
+First, clone this project and install dependencies:
+```
+yarn install
+```
 
+Create database named ``simple-blog`` on local postgresql server. And then run migration:
+```
+sequelize db:migrate
+```
+
+Seed initial data:
+```
+sequelize db:seed:all
+```
+
+Open 2 terminal sessions. On first terminal run this:
 ```
 yarn ts
 ```
