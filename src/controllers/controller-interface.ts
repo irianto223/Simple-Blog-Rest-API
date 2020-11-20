@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
 interface IController {
-  list(req: Request, res: Response): Response;
-  detail(req: Request, res: Response): Response;
-  create(req: Request, res: Response): Response;
-  update(req: Request, res: Response): Response;
-  delete(req: Request, res: Response): Response;
+  list(req: Request, res: Response): void;
+  detail(req: Request, res: Response): void;
+  create(req: Request, res: Response): void;
+  update(req: Request, res: Response): void;
+  delete(req: Request, res: Response): void;
 }
 
 export default IController;

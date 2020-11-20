@@ -1,4 +1,6 @@
 'use strict';
+import { hashPassword } from '../helpers/auth';
+
 const {
   Model
 } = require('sequelize');
@@ -12,29 +14,30 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.UserRole, {
-        foreignKey: {
-          name: 'userId'
-        }
+        sourceKey:'id',
+        foreignKey: 'userId'
       })
 
       User.belongsToMany(models.Role, {
-        through: models.UserRole
+        through: models.UserRole,
+        sourceKey:'id',
+        foreignKey: 'userId'
       })
 
       User.hasMany(models.UserAccess, {
-        foreignKey: {
-          name: 'userId'
-        }
+        sourceKey:'id',
+        foreignKey: 'userId'
       })
 
       User.belongsToMany(models.Access, {
-        through: models.UserAccess
+        through: models.UserAccess,
+        sourceKey:'id',
+        foreignKey: 'userId'
       })
 
       User.hasMany(models.Article, {
-        foreignKey: {
-          name: 'userId'
-        }
+        sourceKey:'id',
+        foreignKey: 'userId'
       })
     }
   };
@@ -46,6 +49,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'User',
+    hooks: {
+      beforeCreate: (instansce, options) => {
+        instansce.password = hashPassword(instansce.password);
+      }
+    }
   });
   return User;
 };

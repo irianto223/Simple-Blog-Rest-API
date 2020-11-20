@@ -12,23 +12,25 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Access.hasMany(models.RoleAccess, {
-        foreignKey: {
-          name: 'accessId'
-        }
+        sourceKey: 'id',
+        foreignKey: 'accessId'
       })
 
       Access.belongsToMany(models.Role, {
-        through: models.RoleAccess
+        through: models.RoleAccess,
+        sourceKey: 'id',
+        foreignKey: 'accessId'
       })
 
       Access.hasMany(models.UserAccess, {
-        foreignKey: {
-          name: 'accessId'
-        }
+        sourceKey: 'id',
+        foreignKey: 'accessId'
       })
 
       Access.belongsToMany(models.User, {
-        through: models.UserAccess
+        through: models.UserAccess,
+        sourceKey: 'id',
+        foreignKey: 'accessId'
       })
     }
   };
