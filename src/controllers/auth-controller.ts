@@ -27,8 +27,8 @@ class AuthController {
           fullName: result.fullName,
           email: result.email,
           gender: result.gender,
-          Roles: result.Roles,
-          Accesses: result.Accesses
+          // Roles: result.Roles,
+          // Accesses: result.Accesses
         }
 
         const token: string = createToken(payload, process?.env?.JWT_SECRET ?? '');

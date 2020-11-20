@@ -52,6 +52,19 @@ class UserController implements IController {
       });
   }
 
+  addAccess(req: Request, res: Response): void {
+    const { id } = req.params;
+    const { accessId } = req.body;
+
+    UserAccess.create({ userId: id, accessId })
+      .then((result: any) => {
+        return successResponse(res, 200, 'access added', result);
+      })
+      .catch((error: any) => {
+        return errorResponse(res, 400, error.message || undefined, error);
+      });
+  }
+
 }
 
 export default new UserController();

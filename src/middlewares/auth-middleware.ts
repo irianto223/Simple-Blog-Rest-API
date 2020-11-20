@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { errorResponse } from '../helpers/response';
 import { verifyToken } from '../helpers/auth';
+const { User, Role, Access } = require('../models');
 
 export const auth = (req: Request, res: Response, next: NextFunction): any => {
   const { authorization } = req. headers;
@@ -17,14 +18,16 @@ export const auth = (req: Request, res: Response, next: NextFunction): any => {
   }
 }
 
-export const checkRoles = (allowedRoles: string[]) => (req: Request, res: Response, next: NextFunction): any => {
+export const checkRoles = (allowedRoles: string[]) => async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   // rules.some(r => myRoles.includes(r))
   const { authorization } = req. headers;
   try {
     const token = authorization?.split(' ')[1] ?? '';
     const decodedToken = verifyToken(token, process?.env?.JWT_SECRET ?? '');
+    
+    const user = await User.findByPk(decodedToken.id, { include: [Role, Access] });
 
-    const userRoles: string[] = decodedToken.Roles.map((d: any) => d.name);
+    const userRoles: string[] = user.Roles.map((d: any) => d.name);
     const isValid = allowedRoles.some((a: string) => userRoles.includes(a));
 
     if (!isValid) {
@@ -36,13 +39,15 @@ export const checkRoles = (allowedRoles: string[]) => (req: Request, res: Respon
   }
 }
 
-export const checkAccesses = (allowedAccesses: string[]) => (req: Request, res: Response, next: NextFunction): any => {
+export const checkAccesses = (allowedAccesses: string[]) => async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const { authorization } = req. headers;
   try {
     const token = authorization?.split(' ')[1] ?? '';
     const decodedToken = verifyToken(token, process?.env?.JWT_SECRET ?? '');
 
-    const userAccesses: string[] = decodedToken.Accesses.map((d: any) => d.name);
+    const user = await User.findByPk(decodedToken.id, { include: [Role, Access] });
+
+    const userAccesses: string[] = user.Accesses.map((d: any) => d.name);
     const isValid = allowedAccesses.some((a: string) => userAccesses.includes(a));
 
     if (!isValid) {

@@ -23,8 +23,24 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   UserAccess.init({
-    userId: DataTypes.INTEGER,
-    accessId: DataTypes.INTEGER
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'userId tidak boleh kosong'
+        }
+      }
+    },
+    accessId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'accessId tidak boleh kosong'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'UserAccess',

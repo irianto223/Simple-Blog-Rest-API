@@ -9,6 +9,7 @@ class UserRoutes extends BaseRoutes {
     this.router.get('/:id', userController.detail);
     this.router.post('/', userController.create);
     this.router.put('/:id', userController.update);
+    this.router.put('/:id/accesses', auth, checkRoles([ROLES.SystemAdmin]), userController.addAccess);
     this.router.delete('/:id', userController.delete);
     this.router.delete('/:id/accesses/:accessId', auth, checkRoles([ROLES.SystemAdmin]), userController.deleteAccess);
   }
