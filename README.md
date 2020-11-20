@@ -26,3 +26,6 @@ And then this:
 ```
 yarn dev
 ```
+
+## Postman Collection
+[Import Postman collection use this Link](https://www.getpostman.com/collections/0abe4723c82dc1672667/)
