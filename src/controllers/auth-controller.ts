@@ -1,11 +1,46 @@
 import { Request, Response } from 'express';
 import { successResponse, errorResponse, notFoundResponse } from '../helpers/response';
+import { comparePassword, createToken } from '../helpers/auth';
 const { User, Role, UserRole, Access, UserAccess } = require('../models');
 
 class AuthController {
 
-  login(_: Request, res: Response): void {
-    res.send('Login OK');
+  login(req: Request, res: Response): void {
+
+    const { authorization } = req.headers;
+    const decoded = Buffer.from(authorization?.split(' ')[1] ?? '', 'base64').toString('ascii');
+    const email = decoded.split(':')[0]
+    const password = decoded.split(':')[1]
+
+    User.findOne({ where: { email }, include: [Role, Access] })
+      .then((result: any) => {
+        if (!result) {
+          return errorResponse(res, 400, 'email not registered');
+        }
+        
+        if (!comparePassword(password, result.password)) {
+          return errorResponse(res, 403, 'wrong password');
+        }
+
+        const payload = {
+          id: result.id,
+          fullName: result.fullName,
+          email: result.email,
+          gender: result.gender,
+          Roles: result.Roles,
+          Accesses: result.Accesses
+        }
+
+        const token: string = createToken(payload, process?.env?.JWT_SECRET ?? '');
+        
+        return successResponse(res, 200, 'login success', {
+          token,
+          data: payload
+        });
+      })
+      .catch((err: any) => {
+        return errorResponse(res, 500, err.message || undefined, err);
+      });
   }
 
   register(req: Request, res: Response): void {

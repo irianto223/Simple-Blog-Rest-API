@@ -19,8 +19,24 @@ module.exports = (sequelize, DataTypes) => {
   };
   Article.init({
     userId: DataTypes.INTEGER,
-    title: DataTypes.STRING,
-    body: DataTypes.STRING
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'article "title" tidak boleh kosong'
+        }
+      }
+    },
+    body: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'article "body" tidak boleh kosong'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Article',
