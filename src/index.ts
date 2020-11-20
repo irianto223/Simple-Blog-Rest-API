@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
+import { config as dotenv } from 'dotenv';
 import IndexRoute from './routes';
 
 class App {
@@ -12,6 +13,7 @@ class App {
     this.app = express();
     this.applyMiddleware();
     this.routes();
+    dotenv();
   }
 
   protected applyMiddleware(): void {
@@ -28,9 +30,8 @@ class App {
   }
 }
 
-const port: number = 5000;
 const app = new App().app;
 
-app.listen(port, () => {
-  console.log('App run on port:', port)
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App run on port: ${process.env.PORT || 3000}, in ${process.env.NODE_ENV} environment.`)
 });

@@ -1,7 +1,9 @@
 import { Router } from 'express';
-import UserRoute from './user-route';
+import userRoutes from './user-routes';
+import authRoutes from './auth-routes';
+import articleRoutes from './article-routes';
 
-class IndexRoute {
+class IndexRoutes {
   public router: Router;
 
   constructor() {
@@ -10,8 +12,10 @@ class IndexRoute {
   }
 
   protected routes(): void {
-    this.router.use('/api/v1/users', new UserRoute().router);
+    this.router.use('/api/v1/auth', authRoutes);
+    this.router.use('/api/v1/users', userRoutes);
+    this.router.use('/api/v1/articles', articleRoutes);
   }
 }
 
-export default IndexRoute
+export default IndexRoutes
