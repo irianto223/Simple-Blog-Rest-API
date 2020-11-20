@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import IController from './controller-interface';
 import { successResponse, errorResponse, notFoundResponse } from '../helpers/response';
-const { User, Role, Access } = require('../models');
+const { User, Role, Access, UserAccess } = require('../models');
 
 class UserController implements IController {
 
@@ -16,7 +16,7 @@ class UserController implements IController {
   }
 
   detail(req: Request, res: Response): void {
-    
+
     const { id } = req.params;
 
     User.findByPk(id, { include: [Role, Access] })
@@ -29,15 +29,27 @@ class UserController implements IController {
   }
 
   create(req: Request, res: Response): void {
-    res.send('CREATE user OK');
+    res.send('not implemented');
   }
 
   update(req: Request, res: Response): void {
-    res.send('UPDATE user OK');
+    res.send('not implemented');
   }
 
   delete(req: Request, res: Response): void {
-    res.send('DELETE user OK');
+    res.send('not implemented');
+  }
+
+  deleteAccess(req: Request, res: Response): void {
+    const { id, accessId } = req.params;
+
+    UserAccess.destroy({ where: { userId: id, accessId } })
+      .then((result: any) => {
+        return successResponse(res, 200, 'access deleted', result);
+      })
+      .catch((error: any) => {
+        return errorResponse(res, 400, error.message || undefined, error);
+      });
   }
 
 }
