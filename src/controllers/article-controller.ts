@@ -40,7 +40,16 @@ class ArticleController implements IController {
   }
 
   update(req: Request, res: Response): void {
-    res.send('UPDATE article OK');
+    const { title, body } = req.body;
+    const { id } = req.params;
+
+    Article.update({ title, body }, { where: { id } })
+      .then((result: any) => {
+        return successResponse(res, 204, 'article updated', result);
+      })
+      .catch((err: any) => {
+        return errorResponse(res, 400, err.message || undefined, err);
+      });
   }
 
   delete(req: Request, res: Response): void {
